@@ -1,0 +1,19 @@
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="https://jakarta.ee/xml/ns/persistence"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
+             version="3.1">
+    <persistence-unit name="testPU" transaction-type="RESOURCE_LOCAL">
+        <class>ru.iaygi.hibernate.model.User</class>
+
+        <!-- Конфигурация подключения к базе -->
+        <properties>
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="none"/> <!-- Автоматическое создание таблиц -->
+            <property name="hibernate.show_sql" value="true"/>       <!-- Логирование SQL-запросов -->
+            <property name="hibernate.format_sql" value="true"/>     <!-- Форматирование SQL -->
+            <property name="hibernate.use_sql_comments" value="true"/> <!-- Добавление комментариев -->
+            <property name="hibernate.type" value="INFO"/>      <!-- Логирование параметров -->
+        </properties>
+    </persistence-unit>
+</persistence>

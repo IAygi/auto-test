@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+	parameters {
+	choice(
+		name: 'TASKS',
+		choices: ['smoke_tests', 'regression_tests', 'ui_tests', 'api_tests'],
+		description: 'Выбор тестового прогона'
+		)
+	choice(
+		name: 'VNC_ENABLED',
+		choices: ['false', 'true'],
+		description: 'Отображение экрана браузера в Selenoid'
+		)
+	choice(
+		name: 'VIDEO_ENABLED',
+		choices: ['false', 'true'],
+		description: 'Запись видео в Selenoid'
+		)
+	}
+	triggers {
+        cron('H 0 * * *')
+    }
+    stages {
+        stage('Clean') {
+          steps {
+            sh 'java --version'
+            sh 'chmod +x gradlew'
+            sh './gradlew clean'
+          }
+        }
+        stage('Test') {
+          steps {
+			script {
+			try {
+				sh './gradlew ${TASKS} -Dvnc_enabled=${VNC_ENABLED} -Dselenoid_enabled=true -Dvideo_enabled=${VIDEO_ENABLED} --no-daemon --warning-mode=all'
+			}
+			catch (Exception e) {
+				println("Error ${e}")
+			}
+          }
+		  }
+        }
+        stage('Allure Report') {
+          steps {
+            allure([
+            includeProperties: false,
+            jdk: '',
+            properties: [],
+            reportBuildPolicy: 'ALWAYS',
+            results: [[path: 'build/allure-results']]
+            ])
+          }
+        }
+    }
+}
