@@ -6,6 +6,7 @@ import io.restassured.authentication.AuthenticationScheme;
 import io.restassured.authentication.NoAuthScheme;
 import io.restassured.builder.MultiPartSpecBuilder;
 import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.config.EncoderConfig;
 import io.restassured.config.RedirectConfig;
 import io.restassured.config.RestAssuredConfig;
@@ -75,6 +76,10 @@ public class RestExecutor {
 
     public <T> T getResponseAs(Class<T> tClass) {
         return response.as(tClass);
+    }
+
+    public <T> T getResponseAsTypeRef(TypeRef<T> typeRef) {
+        return response.as(typeRef);
     }
 
     public <T> T getResponseAs(String path, Class<T> tClass) {
