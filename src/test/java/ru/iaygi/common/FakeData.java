@@ -225,7 +225,7 @@ public class FakeData {
         );
     }
 
-    public String commonName() {
+    public static String commonName() {
         String commonNane = "";
         for (int i = 0; i < 3; i++) {
             String firstLetter = RandomStringUtils.random(1, RU_CONSONANT_CHARS).toUpperCase();
