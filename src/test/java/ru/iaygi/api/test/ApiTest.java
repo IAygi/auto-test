@@ -2,14 +2,14 @@ package ru.iaygi.api.test;
 
 import io.qameta.allure.*;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import ru.iaygi.annotation.Priority;
 import ru.iaygi.api.helper.AttachmentHelper;
-import ru.iaygi.extension.BeforeEachCallbackLifecycle;
+import ru.iaygi.dto.book.Response;
 
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.parallel.ResourceAccessMode.READ_WRITE;
+import static ru.iaygi.api.specification.Conditions.statusCode;
 import static ru.iaygi.common.PriorityValues.HIGH;
 import static ru.iaygi.common.ResourceLockValues.BASE_READ_WRITE;
 
@@ -22,8 +22,7 @@ import static ru.iaygi.common.ResourceLockValues.BASE_READ_WRITE;
 @ResourceLock(value = BASE_READ_WRITE, mode = READ_WRITE)
 public class ApiTest extends AttachmentHelper {
 
-    public static boolean isCreate = false;
-    private static boolean isDelete = true;
+    private Response response;
 
     @BeforeEach
     public void prepare() {
@@ -36,11 +35,15 @@ public class ApiTest extends AttachmentHelper {
     @Test
     @Owner("Aygi.IG")
     @Priority(HIGH)
-    @ExtendWith(BeforeEachCallbackLifecycle.class)
     @DisplayName("test")
     @Description("test")
-    void getList() {
-        step("Получить список", () -> {
+    void getBooksList() {
+        step("Получить список книг", () -> {
+            response = attachmentRest.getAllBooks().shouldHave(statusCode(200)).getResponseAs(Response.class);
+        });
+
+        step("Проверить наличие книги", () -> {
+            booksAssertion.checkResponse(response);
         });
     }
 }

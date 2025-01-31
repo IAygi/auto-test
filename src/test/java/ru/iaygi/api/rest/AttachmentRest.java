@@ -7,14 +7,13 @@ import static io.restassured.http.ContentType.JSON;
 
 public class AttachmentRest {
 
-    private static final String BASE_URL = "";
+    private static final String BASE_URL = "https://demoqa.com";
 
-    @Step("Получить...")
-    public RestExecutor getEntity(int id) {
+    @Step("Получить все книги")
+    public RestExecutor getAllBooks() {
         RestExecutor request = new RestExecutor(BASE_URL)
-                .contentType(JSON)
-                .pathParam("id", id);
-        request.get("");
+                .contentType(JSON);
+        request.get("/BookStore/v1/Books");
 
         return request;
     }
