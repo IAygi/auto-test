@@ -24,5 +24,7 @@ public class BooksAssertion {
                         template.getPages(), template.getDescription(), template.getWebsite()));
 
         assertThat(response.getBooks().toArray()).contains(template);
+
+        assertThat(response.getBooks().get(response.getBooks().size() - 1)).isEqualTo(template);
     }
 }
