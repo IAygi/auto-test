@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.iaygi.dto.book.BooksItem;
 import ru.iaygi.dto.book.Response;
 
-import java.io.IOException;
 import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,7 +11,7 @@ import static org.assertj.core.api.Assertions.tuple;
 
 public class BooksAssertion {
 
-    public void checkResponse(Response response) throws IOException {
+    public void checkResponse(Response response) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         BooksItem template = objectMapper.readValue(Paths.get("src/test/java/ru/iaygi/api/data/json/books.json")
                 .toFile(), BooksItem.class);
@@ -26,5 +25,7 @@ public class BooksAssertion {
         assertThat(response.getBooks().toArray()).contains(template);
 
         assertThat(response.getBooks().get(response.getBooks().size() - 1)).isEqualTo(template);
+        System.out.println("=========================== -> template");
+        System.out.println(template.toString());
     }
 }

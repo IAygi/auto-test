@@ -6,8 +6,14 @@ import org.junit.jupiter.api.parallel.ResourceLock;
 import ru.iaygi.annotation.Priority;
 import ru.iaygi.api.helper.AttachmentHelper;
 import ru.iaygi.dto.book.Response;
+import ru.iaygi.exception.CustomException;
+
+import java.io.FileReader;
+import java.io.IOException;
 
 import static io.qameta.allure.Allure.step;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.parallel.ResourceAccessMode.READ_WRITE;
 import static ru.iaygi.api.specification.Conditions.statusCode;
 import static ru.iaygi.common.PriorityValues.HIGH;
@@ -45,5 +51,33 @@ public class ApiTest extends AttachmentHelper {
         step("Проверить наличие книги", () -> {
             booksAssertion.checkResponse(response);
         });
+    }
+
+    @Test
+    void testReadFileThrowsException() {
+        Exception exception = assertThrows(IOException.class, () -> {
+            new FileReader("non_existing_file.txt");
+        });
+
+        assertTrue(exception.getMessage().contains("non_existing_file"));
+        System.out.println("=========== getMessage = " + exception.getMessage());
+        assertTrue(exception.getMessage().contains("non_existing_file"));
+    }
+
+    @Test
+    void excTwo() {
+        try {
+            textException(0);
+        } catch (CustomException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void textException(int num) throws CustomException {
+        if (num == 0) {
+            throw new CustomException("Капец!");
+        } else {
+            System.out.println("All good!");
+        }
     }
 }

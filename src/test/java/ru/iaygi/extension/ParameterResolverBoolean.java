@@ -22,7 +22,7 @@ public class ParameterResolverBoolean implements ParameterResolver {
                                    ExtensionContext extensionContext) throws ParameterResolutionException {
         Class<?> currentClass = extensionContext.getRequiredTestClass();
         try {
-            isCreate = currentClass.getField("isCreate").getBoolean(isCreate);
+            isCreate = currentClass.getField("isCreate").getBoolean(boolean.class);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
