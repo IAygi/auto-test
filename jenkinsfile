@@ -25,7 +25,7 @@ pipeline {
           steps {
             sh 'java --version'
             sh 'chmod +x gradlew'
-            sh './gradlew clean --warning-mode all'
+            sh './gradlew clean --stacktrace'
           }
         }
         stage('Test') {
