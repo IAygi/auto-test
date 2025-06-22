@@ -21,7 +21,7 @@ pipeline {
         cron('H 0 * * *')
     }
     environment {
-        SECRET_TEXT = credentials('test_values')
+        SECRET_TEXT = credentials('test_json_text')
     }
     stages {
         stage('Clean') {
