@@ -21,7 +21,7 @@ pipeline {
         cron('H 0 * * *')
     }
     environment {
-        TEST_JSON = '\'{\"test\": \"value\"}\''
+        TEST_JSON = '\'{\\"test\\": \\"value\\"}\''
     }
     stages {
         stage('Clean') {
