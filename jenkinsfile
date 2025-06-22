@@ -20,6 +20,9 @@ pipeline {
 	triggers {
         cron('H 0 * * *')
     }
+    environment {
+        TEST_JSON = '{"test": "value"}'
+    }
     stages {
         stage('Clean') {
           steps {
@@ -32,7 +35,7 @@ pipeline {
           steps {
 			script {
 			try {
-				sh './gradlew ${TASKS} -Dvnc_enabled=${VNC_ENABLED} -Dselenoid_enabled=true -Dvideo_enabled=${VIDEO_ENABLED} -Dtest_json='{"test": "value"}' --info --no-daemon --warning-mode=all'
+				sh './gradlew ${TASKS} -Dvnc_enabled=${VNC_ENABLED} -Dselenoid_enabled=true -Dvideo_enabled=${VIDEO_ENABLED} -Dtest_json=${TEST_JSON} --info --no-daemon --warning-mode=all'
 			}
 			catch (Exception e) {
 				println("Error ${e}")
