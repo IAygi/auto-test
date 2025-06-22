@@ -73,6 +73,12 @@ public class ApiTest extends AttachmentHelper {
         }
     }
 
+    @Test
+    public void testJenkins() {
+        String testJson = System.getProperty("test_json", "{}");
+        System.out.println("================= >>>> testJson = " + testJson);
+    }
+
     private void textException(int num) throws CustomException {
         if (num == 0) {
             throw new CustomException("Капец!");
