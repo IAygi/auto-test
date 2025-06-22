@@ -77,6 +77,10 @@ public class ApiTest extends AttachmentHelper {
     public void testJenkins() {
         String testJson = System.getProperty("test_json", "{}");
         System.out.println("================= >>>> testJson = " + testJson);
+        String password1 = System.getenv("DB_CREDS_PSW"); // Читаем из переменной окружения
+        String password2 = System.getProperty("db.password"); // Читаем из -D параметра
+        System.out.println("================= >>>> password1 = " + password1);
+        System.out.println("================= >>>> password2 = " + password2);
     }
 
     private void textException(int num) throws CustomException {
