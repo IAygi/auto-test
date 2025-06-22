@@ -77,9 +77,9 @@ public class ApiTest extends AttachmentHelper {
     public void testJenkins() {
         String testJson = System.getProperty("test_json", "{}");
         if (testJson.equals("12345")) {
-            System.out.println("================= >>>> testJson = 12345");
+            System.out.println("================= >>>> test = true");
         } else {
-            System.out.println("================= >>>> testJson = ?????");
+            System.out.println("================= >>>> test = false");
         }
     }
 
