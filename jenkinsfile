@@ -1,38 +1,35 @@
 pipeline {
-    agent any
+	agent any
 	parameters {
-	choice(
-		name: 'TASKS',
-		choices: ['smoke_tests', 'regression_tests', 'ui_tests', 'api_tests', 'test'],
-		description: 'Выбор тестового прогона'
-		)
-	choice(
-		name: 'VNC_ENABLED',
-		choices: ['false', 'true'],
-		description: 'Отображение экрана браузера в Selenoid'
-		)
-	choice(
-		name: 'VIDEO_ENABLED',
-		choices: ['false', 'true'],
-		description: 'Запись видео в Selenoid'
-		)
+		choice(
+			name: 'TASKS',
+			choices: ['smoke_tests', 'regression_tests', 'ui_tests', 'api_tests', 'test'],
+			description: 'Выбор тестового прогона'
+			)
+		choice(
+			name: 'VNC_ENABLED',
+			choices: ['false', 'true'],
+			description: 'Отображение экрана браузера в Selenoid'
+			)
+		choice(
+			name: 'VIDEO_ENABLED',
+			choices: ['false', 'true'],
+			description: 'Запись видео в Selenoid'
+			)
 	}
-	triggers {
-        cron('H 0 * * *')
-    }
-    environment {
-        DB_CREDS = credentials('7eb68d57-eb1b-4b99-9b72-41a09ed971b0')
-    }
-    stages {
-        stage('Clean') {
-          steps {
-            sh 'java --version'
-            sh 'chmod +x gradlew'
-            sh './gradlew clean --stacktrace'
-          }
-        }
-        stage('Test') {
-          steps {
+	environment {
+		DB_CREDS = credentials('7eb68d57-eb1b-4b99-9b72-41a09ed971b0')
+	}
+	stages {
+		stage('Clean') {
+		  steps {
+			sh 'java --version'
+			sh 'chmod +x gradlew'
+			sh './gradlew clean --stacktrace'
+		  }
+		}
+		stage('Test') {
+		  steps {
 			script {
 			try {
 				sh './gradlew ${TASKS} -Dvnc_enabled=${VNC_ENABLED} -Dselenoid_enabled=true -Dvideo_enabled=${VIDEO_ENABLED} -Dtest_json="$DB_CREDS_PSW" --info --no-daemon --warning-mode=all'
@@ -40,8 +37,21 @@ pipeline {
 			catch (Exception e) {
 				println("Error ${e}")
 			}
-          }
 		  }
+		  }
+		}
+		stage('Allure Report') {
+            steps {
+                script {
+                    allure([
+                        includeProperties: false,
+                        jdk: '',
+                        properties: [],
+                        reportBuildPolicy: 'ALWAYS',
+                        results: [[path: 'build/allure-results']]  
+                    ])
+                }
+            }
         }
-    }
+	}
 }
